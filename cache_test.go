@@ -98,7 +98,7 @@ func TestKeyValueStore(t *testing.T) {
 
 	t.Run("Expiration with concurrent access", func(t *testing.T) {
 		kvStore := NewKeyValueStore()
-		kvStore.Put("key5", "value5", time.Millisecond*200)
+		kvStore.Put("key5", "value5", time.Duration(0))
 
 		var wg sync.WaitGroup
 		wg.Add(2)

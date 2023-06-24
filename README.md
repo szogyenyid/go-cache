@@ -6,6 +6,7 @@ go-cache is a concurrent key-value store library for efficient in-memory caching
 
 - Concurrent key-value store for efficient in-memory caching
 - Supports expiration of key-value pairs
+- Option to set key-value pairs as never expiring
 - Thread-safe operations with built-in synchronization
 - Simple API for putting, getting, and deleting key-value pairs
 
@@ -55,8 +56,8 @@ Contributions are welcome! Please feel free to submit a pull request or open an 
 
 ## Upgrading
 
-Phocus follows [semantic versioning](https://semver.org/), which means breaking changes may occur between major releases.
+go-cache follows [semantic versioning](https://semver.org/), which means breaking changes may occur between major releases.
 
 ## License
 
-Phocus is licensed under [MIT License](LICENSE).
+go-cache is licensed under [MIT License](LICENSE).

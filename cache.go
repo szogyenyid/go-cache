@@ -8,7 +8,7 @@ import (
 
 type keyValue struct {
 	value      interface{}
-	expiration time.Time
+	expiration *time.Time
 }
 
 type KeyValueStore struct {
@@ -27,7 +27,12 @@ func (kv *KeyValueStore) Put(key string, value interface{}, expiration time.Dura
 	kv.mutex.Lock()
 	defer kv.mutex.Unlock()
 
-	expirationTime := time.Now().Add(expiration)
+	var expirationTime *time.Time
+	if expiration > 0 {
+		expTime := time.Now().Add(expiration)
+		expirationTime = &expTime
+	}
+
 	kv.store[key] = keyValue{
 		value:      value,
 		expiration: expirationTime,
@@ -38,12 +43,12 @@ func (kv *KeyValueStore) Put(key string, value interface{}, expiration time.Dura
 
 func (kv *KeyValueStore) Get(key string) (interface{}, bool) {
 	if item, found := kv.store[key]; found {
-		if time.Now().After(item.expiration) {
+		if item.expiration != nil && time.Now().After(*item.expiration) {
 			kv.mutex.Lock()
 			defer kv.mutex.Unlock()
 
 			// Double-check expiration after acquiring the write lock
-			if time.Now().After(item.expiration) {
+			if item.expiration != nil && time.Now().After(*item.expiration) {
 				delete(kv.store, key)
 				return nil, false
 			}
