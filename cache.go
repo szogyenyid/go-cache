@@ -1,6 +1,7 @@
 package cache
 
 import (
+	"fmt"
 	"sync"
 	"time"
 )
@@ -57,6 +58,10 @@ func (kv *KeyValueStore) Get(key string) (interface{}, bool) {
 func (kv *KeyValueStore) Delete(key string) error {
 	kv.mutex.Lock()
 	defer kv.mutex.Unlock()
+
+	if _, found := kv.store[key]; !found {
+		return fmt.Errorf("key not found: %s", key)
+	}
 
 	delete(kv.store, key)
 	return nil
